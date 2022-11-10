@@ -2,6 +2,7 @@ use std::{fmt::Display, path::PathBuf};
 
 use crate::platform::PlatformStorageProvider;
 use anyhow::Result;
+use noosphere_core::data::Did;
 
 pub const USER_KEY_NAME: &str = "user_key_name";
 pub const AUTHORIZATION: &str = "authorization";
@@ -12,7 +13,7 @@ pub const AUTHORIZATION: &str = "authorization";
 /// [noosphere_storage::interface::StorageProvider] implementation that is
 /// suitable for the current platform
 pub enum StorageLayout {
-    Scoped(PathBuf, String),
+    Scoped(PathBuf, Did),
     Unscoped(PathBuf),
 }
 

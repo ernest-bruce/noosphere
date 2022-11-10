@@ -1,4 +1,7 @@
-use noosphere_core::authority::{SphereAction, SphereReference};
+use noosphere_core::{
+    authority::{SphereAction, SphereReference},
+    data::Did,
+};
 use serde_json;
 use ucan::capability::{Capability, Resource, With};
 
@@ -7,14 +10,14 @@ use ucan::capability::{Capability, Resource, With};
 ///
 /// ```
 /// use noosphere_ns::utils::generate_capability;
-/// use noosphere_core::authority::{SphereAction, SphereReference};
+/// use noosphere_core::{data::Did, authority::{SphereAction, SphereReference}};
 /// use ucan::capability::{Capability, Resource, With};
 ///
 /// let identity = "did:key:z6MkoE19WHXJzpLqkxbGP7uXdJX38sWZNUWwyjcuCmjhPpUP";
 /// let expected_capability = Capability {
 ///     with: With::Resource {
 ///         kind: Resource::Scoped(SphereReference {
-///            did: identity.to_owned(),
+///            did: Did(identity.to_owned()),
 ///         }),
 ///     },
 ///     can: SphereAction::Publish,
@@ -25,7 +28,7 @@ pub fn generate_capability(sphere_did: &str) -> Capability<SphereReference, Sphe
     Capability {
         with: With::Resource {
             kind: Resource::Scoped(SphereReference {
-                did: sphere_did.to_owned(),
+                did: Did(sphere_did.to_owned()),
             }),
         },
         can: SphereAction::Publish,

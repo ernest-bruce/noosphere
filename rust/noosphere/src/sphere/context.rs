@@ -3,7 +3,10 @@ use std::sync::Arc;
 use anyhow::Result;
 use noosphere_api::client::Client;
 
-use noosphere_core::authority::{Authorization, SUPPORTED_KEYS};
+use noosphere_core::{
+    authority::{Authorization, SUPPORTED_KEYS},
+    data::Did,
+};
 use noosphere_fs::SphereFs;
 use noosphere_storage::{db::SphereDb, interface::Store};
 use tokio::sync::OnceCell;
@@ -28,7 +31,7 @@ where
     K: KeyMaterial + 'static,
     S: Store,
 {
-    sphere_identity: String,
+    sphere_identity: Did,
     gateway_url: Option<Url>,
     access: SphereAccess<Arc<K>>,
     db: SphereDb<S>,
@@ -42,7 +45,7 @@ where
     S: Store,
 {
     pub fn new(
-        sphere_identity: String,
+        sphere_identity: Did,
         access: SphereAccess<Arc<K>>,
         db: SphereDb<S>,
         gateway_url: Option<Url>,

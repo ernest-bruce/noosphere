@@ -9,7 +9,10 @@ use anyhow::Result;
 use cid::Cid;
 use libipld_cbor::DagCborCodec;
 
-use noosphere_core::authority::{Authorization, SphereAction, SphereReference};
+use noosphere_core::{
+    authority::{Authorization, SphereAction, SphereReference},
+    data::Did,
+};
 use noosphere_storage::encoding::{block_deserialize, block_serialize};
 use reqwest::{header::HeaderMap, Body};
 use ucan::{
@@ -27,7 +30,7 @@ where
     S: UcanStore,
 {
     pub session: IdentifyResponse,
-    pub sphere_identity: String,
+    pub sphere_identity: Did,
     pub api_base: Url,
     pub credential: K,
     pub authorization: Authorization,
@@ -41,7 +44,7 @@ where
     S: UcanStore,
 {
     pub async fn identify(
-        sphere_identity: &str,
+        sphere_identity: &Did,
         api_base: &Url,
         credential: K,
         authorization: &Authorization,
@@ -57,7 +60,7 @@ where
         let mut url = api_base.clone();
         url.set_path(&Route::Did.to_string());
 
-        let gateway_identity = client.get(url).send().await?.text().await?;
+        let gateway_identity = Did(client.get(url).send().await?.text().await?);
 
         let mut url = api_base.clone();
         url.set_path(&Route::Identify.to_string());
@@ -69,7 +72,7 @@ where
             &Capability {
                 with: With::Resource {
                     kind: Resource::Scoped(SphereReference {
-                        did: sphere_identity.to_string(),
+                        did: Did(sphere_identity.to_string()),
                     }),
                 },
                 can: SphereAction::Fetch,
@@ -96,7 +99,7 @@ where
 
         Ok(Client {
             session: identify_response,
-            sphere_identity: sphere_identity.into(),
+            sphere_identity: sphere_identity.clone(),
             api_base: api_base.clone(),
             credential,
             authorization: authorization.clone(),
@@ -106,7 +109,7 @@ where
     }
 
     async fn make_bearer_token(
-        gateway_identity: &str,
+        gateway_identity: &Did,
         credential: &K,
         authorization: &Authorization,
         capability: &Capability<SphereReference, SphereAction>,

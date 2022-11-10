@@ -78,7 +78,7 @@ pub async fn verify_sphere_cid<S: Store>(
 
         for capability_info in proof.reduce_capabilities(&SPHERE_SEMANTICS) {
             let capability = capability_info.capability;
-            if capability_info.originators.contains(&sphere.identity)
+            if capability_info.originators.contains(&*sphere.identity)
                 && capability.enables(&desired_capability)
             {
                 return Ok(());

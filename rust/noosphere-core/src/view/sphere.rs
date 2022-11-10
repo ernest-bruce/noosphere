@@ -16,8 +16,8 @@ use crate::{
         SphereAction, SphereReference, SPHERE_SEMANTICS,
     },
     data::{
-        AuthorityIpld, Bundle, CidKey, ContentType, DelegationIpld, Header, MemoIpld,
-        RevocationIpld, SphereIpld, TryBundle, Version,
+        AuthorityIpld, Bundle, CidKey, ContentType, DelegationIpld, Did, Header, MemoIpld,
+        Mnemonic, RevocationIpld, SphereIpld, TryBundle, Version,
     },
     view::{Links, SphereMutation, SphereRevision, Timeline},
 };
@@ -87,7 +87,7 @@ impl<S: BlockStore> Sphere<S> {
         Authority::try_at_or_empty(sphere.authorization.as_ref(), &mut self.store.clone()).await
     }
 
-    pub async fn try_get_identity(&self) -> Result<String> {
+    pub async fn try_get_identity(&self) -> Result<Did> {
         let sphere = self.try_as_body().await?;
 
         Ok(sphere.identity)
@@ -332,10 +332,10 @@ impl<S: BlockStore> Sphere<S> {
     pub async fn try_generate(
         owner_did: &str,
         store: &mut S,
-    ) -> Result<(Sphere<S>, Authorization, String)> {
+    ) -> Result<(Sphere<S>, Authorization, Mnemonic)> {
         let sphere_key = generate_ed25519_key();
         let mnemonic = ed25519_key_to_mnemonic(&sphere_key)?;
-        let sphere_did = sphere_key.get_did().await?;
+        let sphere_did = Did(sphere_key.get_did().await?);
         let mut memo = MemoIpld::for_body(
             store,
             &SphereIpld {
@@ -392,7 +392,7 @@ impl<S: BlockStore> Sphere<S> {
         Ok((
             Sphere::at(&sphere_cid, store),
             Authorization::Ucan(ucan),
-            mnemonic,
+            Mnemonic(mnemonic),
         ))
     }
 
@@ -413,7 +413,7 @@ impl<S: BlockStore> Sphere<S> {
             .await?;
         let sphere_did = sphere.identity;
         let restored_key = restore_ed25519_key(mnemonic)?;
-        let restored_did = restored_key.get_did().await?;
+        let restored_did = Did(restored_key.get_did().await?);
 
         if sphere_did != restored_did {
             return Err(anyhow!("Incorrect mnemonic provided"));
@@ -448,7 +448,7 @@ impl<S: BlockStore> Sphere<S> {
 
         for info in proof_chain.reduce_capabilities(&SPHERE_SEMANTICS) {
             if info.capability.enables(&authorize_capability)
-                && info.originators.contains(&sphere_did)
+                && info.originators.contains(&*sphere_did)
             {
                 proof_is_valid = true;
                 break;
@@ -516,7 +516,7 @@ mod tests {
             ed25519_key_to_mnemonic, generate_ed25519_key, Authorization, SphereAction,
             SphereReference, SUPPORTED_KEYS,
         },
-        data::{Bundle, CidKey, DelegationIpld, RevocationIpld},
+        data::{Bundle, CidKey, DelegationIpld, Did, RevocationIpld},
         view::{Sphere, SphereMutation, Timeline, SPHERE_LIFETIME},
     };
 
@@ -533,7 +533,7 @@ mod tests {
 
         let (sphere_cid, sphere_identity) = {
             let owner_key = generate_ed25519_key();
-            let owner_did = owner_key.get_did().await.unwrap();
+            let owner_did = Did(owner_key.get_did().await.unwrap());
             let (sphere, _, _) = Sphere::try_generate(&owner_did, &mut store).await.unwrap();
 
             (*sphere.cid(), sphere.try_get_identity().await.unwrap())
@@ -645,7 +645,10 @@ mod tests {
 
         let new_revocation = new_revocation.unwrap();
 
-        assert_eq!(new_revocation.iss, sphere.try_get_identity().await.unwrap());
+        assert_eq!(
+            Did(new_revocation.iss.clone()),
+            sphere.try_get_identity().await.unwrap()
+        );
         assert_eq!(new_revocation.revoke, original_jwt_cid.to_string());
 
         let sphere_key = did_parser.parse(&sphere_identity).unwrap();

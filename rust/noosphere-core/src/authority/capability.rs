@@ -2,6 +2,8 @@ use anyhow::{anyhow, Result};
 use ucan::capability::{Action, CapabilitySemantics, Scope};
 use url::Url;
 
+use crate::data::Did;
+
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Debug)]
 pub enum SphereAction {
     /// May read information about a sphere from a counterpart
@@ -44,7 +46,7 @@ impl TryFrom<String> for SphereAction {
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct SphereReference {
-    pub did: String,
+    pub did: Did,
 }
 
 impl Scope for SphereReference {
@@ -65,7 +67,7 @@ impl TryFrom<Url> for SphereReference {
     fn try_from(value: Url) -> Result<Self> {
         match value.scheme() {
             "sphere" => Ok(SphereReference {
-                did: String::from(value.path()),
+                did: String::from(value.path()).into(),
             }),
             _ => Err(anyhow!(
                 "Could not interpret URI as a sphere reference: {:?}",
