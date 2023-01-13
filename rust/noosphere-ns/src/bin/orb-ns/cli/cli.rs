@@ -1,6 +1,6 @@
 #![cfg(not(target_arch = "wasm32"))]
 
-use crate::cli_address::{deserialize_multiaddr, deserialize_socket_addr, parse_cli_address};
+use crate::cli::address::{deserialize_multiaddr, deserialize_socket_addr, parse_cli_address};
 use clap::{Parser, Subcommand};
 use noosphere_core::data::Did;
 use noosphere_ns::{DHTConfig, Multiaddr, NSRecord};

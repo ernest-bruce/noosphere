@@ -56,8 +56,8 @@ impl RunnerConfig {
     }
 
     pub async fn try_from_command(
-        key_storage: &InsecureKeyStorage,
         command: CLICommand,
+        key_storage: &InsecureKeyStorage,
     ) -> Result<RunnerConfig> {
         match command {
             CLICommand::Run {
@@ -154,7 +154,6 @@ mod tests {
         let expected_key = env.create_key("single-test-key").await?;
 
         let rc = RunnerConfig::try_from_command(
-            &env.key_storage,
             CLICommand::Run {
                 api_address: None,
                 config: None,
@@ -162,6 +161,7 @@ mod tests {
                 listening_address: Some("/ip4/127.0.0.1/tcp/6666".parse()?),
                 bootstrap: None,
             },
+            &env.key_storage,
         )
         .await?;
 
@@ -216,7 +216,6 @@ listening_address = 20000
         let key_2 = env.create_key("my-bootstrap-key-2").await?;
 
         let rc = RunnerConfig::try_from_command(
-            &env.key_storage,
             CLICommand::Run {
                 api_address: None,
                 config: env.config_path.to_owned(),
@@ -224,6 +223,7 @@ listening_address = 20000
                 listening_address: None,
                 bootstrap: None,
             },
+            &env.key_storage,
         )
         .await?;
 
@@ -319,7 +319,7 @@ listening_address = 20000
 
         for command in commands {
             assert!(
-                RunnerConfig::try_from_command(&env.key_storage, command)
+                RunnerConfig::try_from_command(command, &env.key_storage)
                     .await
                     .is_err(),
                 "expected failure from try_from_command"

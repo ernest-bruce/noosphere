@@ -19,8 +19,13 @@ impl APIServer {
     }
 }
 
+pub async fn root_route(//Extension(name_system): Extension<Arc<Mutex<NameSystem>>>,
+) -> Result<axum::Json<()>, handlers::JsonErr> {
+    Ok(axum::Json(()))
+}
 async fn run(ns: Arc<Mutex<NameSystem>>, listener: TcpListener) -> Result<()> {
     let app = Router::new()
+        .route("/api/foo", get(root_route))
         .route(
             &Route::NetworkInfo.to_string(),
             get(handlers::get_network_info),

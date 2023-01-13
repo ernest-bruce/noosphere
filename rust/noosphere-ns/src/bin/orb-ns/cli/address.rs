@@ -239,7 +239,6 @@ impl TryFrom<CLIAddress> for Multiaddr {
 pub mod test {
     use super::*;
     use anyhow::Result;
-    //use serde::Deserialize;
 
     #[test]
     fn cli_address_to_socket_addr() -> Result<()> {
