@@ -5,6 +5,13 @@
     * noosphere-storage bumped from 0.4.1 to 0.4.2
     * noosphere-collections bumped from 0.3.1 to 0.3.2
 
+## [0.6.4](https://github.com/subconsciousnetwork/noosphere/compare/noosphere-core-v0.6.3...noosphere-core-v0.6.4) (2023-02-20)
+
+
+### Features
+
+* Introduce `noosphere-gateway` crate ([#238](https://github.com/subconsciousnetwork/noosphere/issues/238)) ([791bc39](https://github.com/subconsciousnetwork/noosphere/commit/791bc3996cfac12cb077c3721f22d080a71d33ba))
+
 ## [0.6.2](https://github.com/subconsciousnetwork/noosphere/compare/noosphere-core-v0.6.1...noosphere-core-v0.6.2) (2023-02-07)
 
 

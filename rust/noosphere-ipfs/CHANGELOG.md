@@ -4,6 +4,20 @@
   * dev-dependencies
     * noosphere-storage bumped from 0.4.0 to 0.4.2
 
+## [0.1.3](https://github.com/subconsciousnetwork/noosphere/compare/noosphere-ipfs-v0.1.2...noosphere-ipfs-v0.1.3) (2023-02-20)
+
+
+### Features
+
+* Introduce `noosphere-gateway` crate ([#238](https://github.com/subconsciousnetwork/noosphere/issues/238)) ([791bc39](https://github.com/subconsciousnetwork/noosphere/commit/791bc3996cfac12cb077c3721f22d080a71d33ba))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dev-dependencies
+    * noosphere-core bumped from 0.6.3 to 0.6.4
+
 ## [0.1.1](https://github.com/subconsciousnetwork/noosphere/compare/noosphere-ipfs-v0.1.0...noosphere-ipfs-v0.1.1) (2023-01-31)
 
 

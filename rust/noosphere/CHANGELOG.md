@@ -8,6 +8,21 @@
   * dependencies
     * noosphere-into bumped from 0.4.4 to 0.4.5
 
+## [0.6.4](https://github.com/subconsciousnetwork/noosphere/compare/noosphere-v0.6.3...noosphere-v0.6.4) (2023-02-20)
+
+
+### Features
+
+* Introduce `noosphere-gateway` crate ([#238](https://github.com/subconsciousnetwork/noosphere/issues/238)) ([791bc39](https://github.com/subconsciousnetwork/noosphere/commit/791bc3996cfac12cb077c3721f22d080a71d33ba))
+* Noosphere builds and runs tests on Windows ([#228](https://github.com/subconsciousnetwork/noosphere/issues/228)) ([d1320f0](https://github.com/subconsciousnetwork/noosphere/commit/d1320f08429c8f8090fd4612b56ebf9386414cc7))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * noosphere-into bumped from 0.4.5 to 0.4.6
+
 ## [0.6.2](https://github.com/subconsciousnetwork/noosphere/compare/noosphere-v0.6.1...noosphere-v0.6.2) (2023-02-07)
 
 

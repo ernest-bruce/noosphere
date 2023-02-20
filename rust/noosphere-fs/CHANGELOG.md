@@ -9,6 +9,10 @@
   * dependencies
     * noosphere-core bumped from 0.6.1 to 0.6.2
 
+* The following workspace dependencies were updated
+  * dependencies
+    * noosphere-core bumped from 0.6.3 to 0.6.4
+
 ## [0.5.3](https://github.com/subconsciousnetwork/noosphere/compare/noosphere-fs-v0.5.2...noosphere-fs-v0.5.3) (2023-02-16)
 
 

@@ -27,6 +27,21 @@
     * noosphere-storage bumped from 0.4.1 to 0.4.2
     * noosphere-fs bumped from 0.5.2 to 0.5.3
 
+## [0.4.6](https://github.com/subconsciousnetwork/noosphere/compare/noosphere-into-v0.4.5...noosphere-into-v0.4.6) (2023-02-20)
+
+
+### Features
+
+* Noosphere builds and runs tests on Windows ([#228](https://github.com/subconsciousnetwork/noosphere/issues/228)) ([d1320f0](https://github.com/subconsciousnetwork/noosphere/commit/d1320f08429c8f8090fd4612b56ebf9386414cc7))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * noosphere-core bumped from 0.6.3 to 0.6.4
+    * noosphere-fs bumped from 0.5.3 to 0.5.4
+
 ## [0.4.0](https://github.com/subconsciousnetwork/noosphere/compare/noosphere-into-v0.3.0...noosphere-into-v0.4.0) (2022-12-14)
 
 
